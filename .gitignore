@@ -11,3 +11,4 @@ test_user.db
 user.db
 .*db
 scratches
+.env
