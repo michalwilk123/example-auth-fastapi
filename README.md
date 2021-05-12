@@ -1,9 +1,9 @@
 # Oauth2, jwt fastapi example
 
-Simple application for showcasing basic usecase of oauth2 and jwt token
-authorization.
+Simple application for showcasing basic usecases of modern token based
+authorization technologies (JWT and oauth2).
 
-Uses [Fastapi]() as framework and [Motor]() as async mongodb driver
+Uses [Fastapi](https://fastapi.tiangolo.com) as framework and [Motor](https://motor.readthedocs.io/en/stable/) as async mongodb driver
 There is also available documentation for the project! 
 
 <br/>
@@ -27,7 +27,7 @@ http://localhost:5000/docs
 git clone https://github.com/michalwilk123/example-auth-fastapi
 ```
 
-2) Install dependacies (in project directory)
+2) Install dependencies (in project directory)
 
 ```bash
 pip install pipenv
