@@ -34,13 +34,16 @@ async def read_citizen(
 @citizen_router.post("")
 async def create_citizen(
     citizen_model: CitizenModel,
-    scope=Security(get_current_citizen, scopes=["all"])
+    scope=Security(get_current_citizen, scopes=["all"]),
 ):
     if scope == "all":
         success = await citizen.create_citizen(citizen_model)
         return {"success": success}
     else:
-        raise  HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Your access group has no permission to perform this operation")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Your access group has no permission to perform this operation",
+        )
 
 
 @citizen_router.delete("")
@@ -50,7 +53,10 @@ async def delete_citizen(
     if scope == "all":
         return citizen.delete_citizen(citizen_pid)
     else:
-        raise  HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Your access group has no permission to perform this operation")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Your access group has no permission to perform this operation",
+        )
 
 
 @citizen_router.put("/mail")
@@ -61,6 +67,6 @@ async def update_mail(citizen_auth_model: CitizenMailAuth):
 
 
 @citizen_router.get("/mail")
-async def authorize_mail(token:str):
+async def authorize_mail(token: str):
     ...
     # return citizen.update_mail(citizen_auth_model.PID, citizen_auth_model.name)

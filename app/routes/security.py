@@ -15,7 +15,9 @@ security_router = APIRouter()
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
 ):
-    is_auth, scope = await authenticate_authority(form_data.username, form_data.password)
+    is_auth, scope = await authenticate_authority(
+        form_data.username, form_data.password
+    )
 
     if not is_auth:
         raise HTTPException(

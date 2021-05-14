@@ -10,7 +10,7 @@ async def create_citizen(citizen_model: CitizenModel) -> bool:
         return False
 
     # i know that is bad but i dont know how to solve it
-    cit_json = json.loads(citizen_model.json()) 
+    cit_json = json.loads(citizen_model.json())
     await citizen_collection.insert_one(cit_json)
     return True
 

@@ -1,3 +1,9 @@
 {
-    "python.pythonPath": "/home/michal/Programming/python/wdcAuth/.venv/bin/python3.9"
+    "python.pythonPath": "/home/michal/Programming/python/wdcAuth/bearer/.venv/bin/python3.9",
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 }
