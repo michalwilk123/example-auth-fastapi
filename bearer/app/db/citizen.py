@@ -1,5 +1,5 @@
 from typing import Optional
-from app.models.citizen_model import CitizenDriveData, CitizenModel
+from app.models.citizen_model import CitizenModel
 from .collections import citizen_collection
 import json
 
@@ -8,7 +8,9 @@ async def create_citizen(citizen_model: CitizenModel) -> bool:
     doc = await citizen_collection.find_one({"PID": citizen_model.PID})
     if doc is not None:
         return False
-    cit_json = json.loads(citizen_model.json())
+
+    # i know that is bad but i dont know how to solve it
+    cit_json = json.loads(citizen_model.json()) 
     await citizen_collection.insert_one(cit_json)
     return True
 
