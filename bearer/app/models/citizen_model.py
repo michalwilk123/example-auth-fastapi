@@ -24,6 +24,9 @@ class CitizenModel(BaseModel):
     contact_mail: Optional[EmailStr]
 
     class Config:
+        """
+        This is an example for the citizen model
+        """
         schema_extra = {
             "example" : {
                 "name" : "john",
@@ -86,4 +89,13 @@ class CitizenDriveData(BaseModel):
 
 
 def deprecate_to_driver_model(citizen: CitizenModel) -> CitizenDriveData:
-    return CitizenDriveData()
+    return CitizenDriveData(
+            name = citizen.name ,
+            surname = citizen.surname ,
+            driver_license_id = citizen.driver_license_id ,
+            driver_license_exp_date = citizen.driver_license_exp_date ,
+            driver_penalty_points = citizen.driver_penalty_points ,
+            residence = citizen.residence ,
+            contact_number = citizen.contact_number ,
+            contact_mail = citizen.contact_mail
+    )

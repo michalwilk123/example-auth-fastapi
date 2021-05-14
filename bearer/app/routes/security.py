@@ -15,9 +15,9 @@ security_router = APIRouter()
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
 ):
-    if not await authenticate_authority(
-        form_data.username, form_data.password
-    ):
+    is_auth, scope = await authenticate_authority(form_data.username, form_data.password)
+
+    if not is_auth:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
@@ -27,7 +27,7 @@ async def login_for_access_token(
         minutes=security_config.ACCESS_TOKEN_EXPIRE_MINUTES
     )
     access_token = create_access_token(
-        data={"sub": form_data.username, "scopes": form_data.scopes},
+        data={"sub": form_data.username, "scopes": [scope]},
         expires_time=access_token_expires,
     )
     return {"access_token": access_token, "token_type": "bearer"}
