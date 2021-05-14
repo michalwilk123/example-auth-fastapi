@@ -11,9 +11,16 @@ pymongo = "*"
 python-dotenv = "*"
 dnspython = "*"
 uvloop = "*"
+requests = "*"
+email-validator = "*"
+python-multipart = "*"
 
 [dev-packages]
 black = "*"
+pytest-mock = "*"
+pytest-asyncio = "*"
+pytest = "*"
+flake8 = "==3.9.1"
 
 [requires]
 python_version = "3.9"
