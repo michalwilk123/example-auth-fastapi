@@ -6,9 +6,10 @@ from .config import AppInformation
 app_information = AppInformation()
 app = FastAPI()
 
-@app.get('/')
+
+@app.get("/")
 async def root():
-    return {"response":"hello world"}
+    return {"response": "hello world"}
 
 
 app.include_router(citizen_router)
