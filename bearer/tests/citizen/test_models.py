@@ -1,5 +1,5 @@
 from ..client import test_client
-from app.models import CitizenModel
+from app.models.citizen_model import CitizenModel
 
 
 def test_model():

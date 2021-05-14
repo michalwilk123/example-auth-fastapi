@@ -1,9 +1,9 @@
-from app.models import citizen_model
-from app.models.citizen_model import CitizenMailAuth
 from ..client import test_client
 from requests.auth import HTTPBasicAuth
-from app.models import CitizenModel
+from app.models.citizen_model import CitizenModel
 import json
+
+
 paul_document = {
     "name" : "john",
     "surname" : "paul",
