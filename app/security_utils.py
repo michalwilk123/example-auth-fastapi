@@ -1,20 +1,13 @@
-from os import stat
-from fastapi import Depends, status, Security
+from fastapi import Depends, status
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
-from typing import Optional, Union
+from typing import Optional
 from app.config import SecurityConfig
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 from fastapi import HTTPException
 from pydantic import ValidationError
 from app.models.token_models import TokenData
-from app.db.citizen import read_citizen
-from app.models.citizen_model import (
-    CitizenDriveData,
-    CitizenModel,
-    deprecate_to_driver_model,
-)
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -74,7 +67,7 @@ async def get_current_citizen(
     if security_scopes.scopes:
         authenticate_value = f'Bearer scope="{security_scopes.scope_str}"'
     else:
-        authenticate_value = f"Bearer"
+        authenticate_value = "Bearer"
 
     cred_exception = get_cred_exception(authenticate_value)
 

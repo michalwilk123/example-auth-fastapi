@@ -1,6 +1,7 @@
 from functools import lru_cache
 from pydantic import BaseSettings
 from pydantic.networks import EmailStr
+from fastapi_mail import ConnectionConfig
 
 
 @lru_cache
@@ -11,6 +12,9 @@ def get_db_settings():
 @lru_cache
 def get_mail_config():
     return EmailConfig()
+
+
+SERVER_URL = "http://localhost:5000"
 
 
 class DatabaseConfig(BaseSettings):
@@ -40,10 +44,33 @@ class SecurityConfig(BaseSettings):
 class EmailConfig(BaseSettings):
     EMAIL_LOGIN: EmailStr
     EMAIL_PASSWORD: str
+    EMAIL_UPDATE_EXPIRATION_PERIOD:int=5
 
     class Config:
         env_file = ".env"
 
+
+# mail_connection_config = ConnectionConfig(
+#     MAIL_USERNAME=get_mail_config().EMAIL_LOGIN,
+#     MAIL_PASSWORD=get_mail_config().EMAIL_PASSWORD,
+
+#     MAIL_PORT=587,
+#     MAIL_SERVER="smtp.gmail.com",
+#     MAIL_TLS=True,
+#     MAIL_SSL=False,
+# )
+
+mail_connection_config = ConnectionConfig(
+    MAIL_USERNAME = "Central Statistical Office App",
+    MAIL_PASSWORD = get_mail_config().EMAIL_PASSWORD,
+    MAIL_FROM = get_mail_config().EMAIL_LOGIN,
+    MAIL_PORT = 587,
+    MAIL_SERVER = "smtp.gmail.com",
+    MAIL_FROM_NAME="Student debil",
+    MAIL_TLS = True,
+    MAIL_SSL = False,
+    USE_CREDENTIALS = True
+)
 
 MONGO_URL = (
     "mongodb+srv://"

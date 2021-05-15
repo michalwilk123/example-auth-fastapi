@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/michal/Programming/python/wdcAuth/bearer/.venv/bin/python3.9",
+    "python.pythonPath": ".venv/bin/python",
     "python.testing.pytestArgs": [
         "tests"
     ],
