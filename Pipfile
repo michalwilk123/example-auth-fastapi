@@ -14,7 +14,6 @@ dnspython = "*"
 pymongo = "*"
 motor = "*"
 fastapi-mail = "*"
-aiosmtplib = "*"
 
 [dev-packages]
 flake8 = "==3.9.1"
