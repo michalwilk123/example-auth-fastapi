@@ -28,13 +28,13 @@ async def update_mail(citizen_id: str, mail: str) -> dict:
         {"PID": citizen_id}, {"$set": {"contact_mail": mail}}
     )
     if result is None:
-        return {"error" : "Could match given PID number!"}
+        return {"error": "Could match given PID number!"}
 
     resp = {
-        "matching-mail-found" : result.matched_count == 1,
-        "mail-modified" : result.modified_count == 1
+        "matching-mail-found": result.matched_count == 1,
+        "mail-modified": result.modified_count == 1,
     }
-    
+
     return resp
 
 

@@ -15,6 +15,11 @@ security_router = APIRouter()
 async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
 ):
+    """
+    Log in to your account using oauth2 authorization.
+    In response we get an jwt authorization token
+    which is used for granting access to data
+    """
     is_auth, scope = await authenticate_authority(
         form_data.username, form_data.password
     )

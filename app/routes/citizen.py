@@ -26,11 +26,14 @@ security = HTTPBasic()
 fast_mail = FastMail(mail_connection_config)
 
 
-
 @citizen_router.get("")
 async def read_citizen(
     citizen_pid: str, scope=Security(get_current_citizen, scopes=["all"])
 ) -> Union[None, CitizenModel, CitizenDriveData]:
+    """
+    Read citizen related data. Needs authorization
+    from the client
+    """
     user = await citizen.read_citizen(citizen_pid)
 
     if user is None:
@@ -47,6 +50,10 @@ async def create_citizen(
     citizen_model: CitizenModel,
     scope=Security(get_current_citizen, scopes=["all"]),
 ):
+    """
+    Assign new citizen to the database.
+    Need special permissions to perform the operation
+    """
     if scope == "all":
         success = await citizen.create_citizen(citizen_model)
         return {"success": success}
@@ -62,6 +69,11 @@ async def create_citizen(
 async def delete_citizen(
     citizen_pid: str, scope=Security(get_current_citizen, scopes=["all"])
 ):
+    """
+    Delete user with given PID number.
+    Needs elevated permissions.
+    Returns 401 error when not authorized
+    """
     if scope == "all":
         return citizen.delete_citizen(citizen_pid)
     else:
@@ -105,7 +117,7 @@ please ignore this mail.<i/>
         subject="Update your mail",
         recipients=[citizen_auth_model.contact_mail],
         body=template,
-        subtype="html"
+        subtype="html",
     )
 
     await fast_mail.send_message(message)
@@ -129,7 +141,7 @@ async def authorize_mail(token: str):
             algorithms=[security_config.ALGORITHM],
         )
         response["payload-validated"] = True
-        
+
         citizen_data = payload.get("data")
         response["payload"] = citizen_data
     except (JWTError, ValidationError):

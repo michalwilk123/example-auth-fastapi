@@ -6,8 +6,8 @@ from fastapi import Query
 
 class CitizenModel(BaseModel):
     """
-    Model whitch defines the citizen, this will be
-    actually stored in the mongodb database
+    Model which defines the citizen. this will be
+    actually stored in the mongodb database.
     """
 
     name: str = Query(..., regex="[a-zA-Z]{3,40}")
@@ -47,6 +47,11 @@ class CitizenModel(BaseModel):
 
 
 class CitizenMailAuth(BaseModel):
+    """
+    You pass this data when you want to update
+    your mail. Additional parameters are passed
+    for simple citizen validation
+    """
     name: str = Query(..., regex="[a-zA-Z]{3,40}")
     surname: str = Query(..., regex="[a-zA-Z]{3,40}")
     PID: str = Query(..., regex="[0-9]{11}")
@@ -64,6 +69,11 @@ class CitizenMailAuth(BaseModel):
 
 
 class CitizenDriveData(BaseModel):
+    """
+    Citizen data related with the driving history.
+    Derived from Citizen Model and limted to only
+    relevant informations
+    """
     name: str = Query(..., regex="[a-zA-Z]{3,40}")
     surname: str = Query(..., regex="[a-zA-Z]{3,40}")
     driver_license_id: Optional[str] = Query(None, regex="[A-Z0-9]{11}")
