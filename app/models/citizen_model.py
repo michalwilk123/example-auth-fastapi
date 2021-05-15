@@ -17,7 +17,7 @@ class CitizenModel(BaseModel):
     martial_status: Optional[str] = Query(None, max_length=50)
     driver_license_id: Optional[str] = Query(None, regex="[A-Z0-9]{11}")
     driver_license_exp_date: Optional[date]
-    driver_penalty_points: Optional[str] = Query(None, regex="[0-9]{0,3}")
+    driver_penalty_points: Optional[int]
     place_of_birth: str = Query(..., regex="[A-Za-z ]{2,100}")
     residence: str = Query(..., regex="[A-Za-z ]{2,100}")
     contact_number: Optional[str] = Query(..., regex="[0-9]{6,20}")
@@ -37,11 +37,11 @@ class CitizenModel(BaseModel):
                 "martial_status": "unknown",
                 "driver_license_id": "0123456789A",
                 "driver_license_exp_date": "2222-01-21",
-                "driver_penalty_points": "10",
+                "driver_penalty_points": 10,
                 "place_of_birth": "Warsaw",
                 "residence": "Gdynia",
                 "contact_number": "123456789",
-                "contact_mail": "examplemail@mail.com",
+                "contact_mail": None,
             }
         }
 
@@ -52,6 +52,7 @@ class CitizenMailAuth(BaseModel):
     your mail. Additional parameters are passed
     for simple citizen validation
     """
+
     name: str = Query(..., regex="[a-zA-Z]{3,40}")
     surname: str = Query(..., regex="[a-zA-Z]{3,40}")
     PID: str = Query(..., regex="[0-9]{11}")
@@ -74,11 +75,12 @@ class CitizenDriveData(BaseModel):
     Derived from Citizen Model and limted to only
     relevant informations
     """
+
     name: str = Query(..., regex="[a-zA-Z]{3,40}")
     surname: str = Query(..., regex="[a-zA-Z]{3,40}")
     driver_license_id: Optional[str] = Query(None, regex="[A-Z0-9]{11}")
     driver_license_exp_date: Optional[date]
-    driver_penalty_points: Optional[str] = Query(None, regex="[0-9]{0,3}")
+    driver_penalty_points: Optional[int]
     residence: str = Query(..., regex="[A-Za-z ]{2,100}")
     contact_number: Optional[str] = Query(..., regex="[0-9]{6,20}")
     contact_mail: Optional[EmailStr]
@@ -90,7 +92,7 @@ class CitizenDriveData(BaseModel):
                 "surname": "Slowik",
                 "driver_license_id": "0123456789A",
                 "driver_license_exp_date": "2021-10-11",
-                "driver_penalty_points": "0",
+                "driver_penalty_points": 0,
                 "residence": "Gdansk",
                 "contact_number": "420420420",
                 "contact_mail": "slowik@wp.pl",
