@@ -4,7 +4,7 @@ Simple application for showcasing basic usecases of modern token based
 authorization technologies (JWT and oauth2).
 
 Uses [Fastapi](https://fastapi.tiangolo.com) as framework and [Motor](https://motor.readthedocs.io/en/stable/) as async mongodb driver
-There is also available documentation for the project! 
+The app is shipped with swagger documentation.
 
 <br/>
 
@@ -31,22 +31,12 @@ git clone https://github.com/michalwilk123/example-auth-fastapi
 
 ```bash
 pip install pipenv
-pipenv install
+pipenv install --pre
 ```
 ---
 
 ## Running the application:
 
-### Bearer: Central Statistical Office App
-
 ```bash
-cd bearer
-python run.py
-```
-
-### Oauth Host: Communications Department App
-
-```bash
-cd data_client
 python run.py
 ```
