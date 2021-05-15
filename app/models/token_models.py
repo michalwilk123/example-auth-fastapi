@@ -14,6 +14,5 @@ class Token(BaseModel):
 
 
 class EmailTokenPayload(BaseModel):
-    data:CitizenMailAuth
-    expires:int
-
+    data: CitizenMailAuth
+    expires: int
