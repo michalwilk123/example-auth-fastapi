@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = {extras = ["all"], version = "*"}
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+python-multipart = "*"
+email-validator = "*"
+requests = "*"
+dnspython = "*"
+pymongo = "*"
+motor = "*"
+fastapi-mail = "*"
+aiosmtplib = "*"
+
+[dev-packages]
+flake8 = "==3.9.1"
+black = "*"
+pytest = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
