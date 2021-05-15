@@ -75,7 +75,7 @@ async def delete_citizen(
     Returns 401 error when not authorized
     """
     if scope == "all":
-        return citizen.delete_citizen(citizen_pid)
+        return {"success": await citizen.delete_citizen(citizen_pid)}
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
