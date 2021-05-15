@@ -23,11 +23,19 @@ async def read_citizen(citizen_id: str) -> Optional[CitizenModel]:
         return CitizenModel(**result)
 
 
-async def update_mail(citizen_id: str, mail: str) -> bool:
+async def update_mail(citizen_id: str, mail: str) -> dict:
     result = await citizen_collection.update_one(
         {"PID": citizen_id}, {"$set": {"contact_mail": mail}}
     )
-    return result.modified_count == 1
+    if result is None:
+        return {"error" : "Could match given PID number!"}
+
+    resp = {
+        "matching-mail-found" : result.matched_count == 1,
+        "mail-modified" : result.modified_count == 1
+    }
+    
+    return resp
 
 
 async def delete_citizen(citizen_id: str) -> bool:
