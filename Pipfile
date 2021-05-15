@@ -14,6 +14,9 @@ dnspython = "*"
 pymongo = "*"
 motor = "*"
 fastapi-mail = "*"
+aiosmtplib = "*"
+pydantic = "*"
+async-timeout = "*"
 
 [dev-packages]
 flake8 = "==3.9.1"
