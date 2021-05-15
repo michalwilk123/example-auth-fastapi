@@ -12,7 +12,7 @@ from app.models.citizen_model import (
     deprecate_to_driver_model,
 )
 from fastapi import APIRouter, HTTPException, status
-from fastapi_mail import FastMail
+from fastapi_mail import FastMail, MessageSchema
 from fastapi.security import HTTPBasic
 from app.db import citizen
 from typing import Union
@@ -20,52 +20,11 @@ from app.config import get_mail_config, mail_connection_config, SERVER_URL
 from app.models.token_models import EmailTokenPayload
 from jose import jwt, JWTError
 import time
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import aiosmtplib
 
 citizen_router = APIRouter(prefix="/citizen")
 security = HTTPBasic()
 fast_mail = FastMail(mail_connection_config)
 
-
-async def send_mail(payload: str, adresat, **params):
-    MAIL_PARAMS = {
-        "TLS": True,
-        "host": "smtp.gmail.com",
-        "password": "Wdctest4%",
-        "user": "testwdc45@gmail.com",
-        "port": 587,
-    }
-    mail_params = params.get("mail_params", MAIL_PARAMS)
-
-    msg = MIMEMultipart()
-    msg.preamble = "TEST"
-    msg["Subject"] = "TEST3"
-    msg["From"] = "testwdc45@gmail.com"
-    adresat = adresat.split()
-    msg["To"] = ", ".join(adresat)
-
-    message = f"""
-Subject: Test
-
-{payload}
-"""
-    # msg.attach(MIMEText(message, "plain", 'utf-8'))
-    msg.attach(MIMEText(message, "plain", "utf-8"))
-
-    host = mail_params.get("host", "localhost")
-    isSSL = mail_params.get("SSL", False)
-    isTLS = mail_params.get("TLS", False)
-    port = mail_params.get("port", 465 if isSSL else 25)
-    smtp = aiosmtplib.SMTP(hostname=host, port=port, use_tls=isSSL)
-    await smtp.connect()
-    if isTLS:
-        await smtp.starttls()
-    if "user" in mail_params:
-        await smtp.login(mail_params["user"], mail_params["password"])
-    await smtp.send_message(msg)
-    await smtp.quit()
 
 
 @citizen_router.get("")
@@ -115,7 +74,12 @@ async def delete_citizen(
 
 @citizen_router.put("/mail")
 async def update_mail(citizen_auth_model: CitizenMailAuth):
-    # normally creating the jwt token
+    """
+    Propose new mail to update for the api. Proposed
+    mail needs to be validated, so as the result,
+    application sends a mail message with a link with
+    atached jwt token
+    """
     jwt_token = jwt.encode(
         EmailTokenPayload(
             data=citizen_auth_model,
@@ -136,19 +100,38 @@ async def update_mail(citizen_auth_model: CitizenMailAuth):
 <i>If you did not requested mail update,
 please ignore this mail.<i/>
 """
-    await send_mail(template, citizen_auth_model.contact_mail)
+
+    message = MessageSchema(
+        subject="Update your mail",
+        recipients=[citizen_auth_model.contact_mail],
+        body=template,
+        subtype="html"
+    )
+
+    await fast_mail.send_message(message)
     return {"success": True}
 
 
 @citizen_router.get("/mail")
 async def authorize_mail(token: str):
+    """
+    You will probably access this link
+    from your email.
+    Validate app generated token JWT
+    token to authorize your mail
+    address
+    """
+    response = {}
     try:
         payload = jwt.decode(
             token,
             security_config.JWT_SECRET_KEY,
             algorithms=[security_config.ALGORITHM],
         )
+        response["payload-validated"] = True
+        
         citizen_data = payload.get("data")
+        response["payload"] = citizen_data
     except (JWTError, ValidationError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -158,4 +141,5 @@ async def authorize_mail(token: str):
     success = await citizen.update_mail(
         citizen_data["PID"], citizen_data["contact_mail"]
     )
-    return {"success": success}
+    response["mail-update-status"] = success
+    return response

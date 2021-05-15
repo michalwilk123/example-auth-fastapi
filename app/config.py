@@ -44,29 +44,20 @@ class SecurityConfig(BaseSettings):
 class EmailConfig(BaseSettings):
     EMAIL_LOGIN: EmailStr
     EMAIL_PASSWORD: str
+    EMAIL_USERNAME: str
     EMAIL_UPDATE_EXPIRATION_PERIOD: int = 5
 
     class Config:
         env_file = ".env"
 
 
-# mail_connection_config = ConnectionConfig(
-#     MAIL_USERNAME=get_mail_config().EMAIL_LOGIN,
-#     MAIL_PASSWORD=get_mail_config().EMAIL_PASSWORD,
-
-#     MAIL_PORT=587,
-#     MAIL_SERVER="smtp.gmail.com",
-#     MAIL_TLS=True,
-#     MAIL_SSL=False,
-# )
-
 mail_connection_config = ConnectionConfig(
-    MAIL_USERNAME="Central Statistical Office App",
+    MAIL_USERNAME=get_mail_config().EMAIL_USERNAME,
     MAIL_PASSWORD=get_mail_config().EMAIL_PASSWORD,
     MAIL_FROM=get_mail_config().EMAIL_LOGIN,
     MAIL_PORT=587,
     MAIL_SERVER="smtp.gmail.com",
-    MAIL_FROM_NAME="Student debil",
+    MAIL_FROM_NAME="Fast api jwt example application",
     MAIL_TLS=True,
     MAIL_SSL=False,
     USE_CREDENTIALS=True,
