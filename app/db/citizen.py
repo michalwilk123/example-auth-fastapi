@@ -24,12 +24,12 @@ async def read_citizen(citizen_id: str) -> Optional[CitizenModel]:
 
 
 async def update_mail(citizen_id: str, mail: str) -> bool:
-    result = citizen_collection.update_one(
+    result = await citizen_collection.update_one(
         {"PID": citizen_id}, {"$set": {"contact_mail": mail}}
     )
     return result.modified_count == 1
 
 
 async def delete_citizen(citizen_id: str) -> bool:
-    result = citizen_collection.delete_one({"PID": citizen_id})
+    result = await citizen_collection.delete_one({"PID": citizen_id})
     return result.deleted_count == 1
